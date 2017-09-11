@@ -11,6 +11,7 @@ window.Vue = require('vue');
 
 import VueRouter from  'vue-router';
 import router from './routes';
+import App from './components/App';
 
 Vue.use(VueRouter);
 
@@ -20,7 +21,7 @@ Vue.use(VueRouter);
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-// Vue.component('example', require('./components/Example.vue'));
+Vue.component('app', App);
 
 const app = new Vue({
     el: '#app',
