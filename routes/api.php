@@ -22,3 +22,9 @@ Route::get('/posts', 'PostController@index');
 Route::get('/posts/{post}', 'PostController@show');
 
 Route::post('/register', 'Auth\RegisterController@register');
+
+Route::get('test', function () {
+
+    $user = \App\User::with('posts')->find(26);
+    return new \App\Http\Resources\User($user);
+});
