@@ -19,6 +19,11 @@ let routes = [
         component : require('./components/posts/Post')
     },
     {
+        path : '/login',
+        name : 'login',
+        component : require('./components/login/Login.vue')
+    },
+    {
         path : '/register',
         name : 'register',
         component : require('./components/register/Register')

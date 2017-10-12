@@ -22,9 +22,11 @@ Route::get('/posts', 'PostController@index');
 Route::get('/posts/{post}', 'PostController@show');
 
 Route::post('/register', 'Auth\RegisterController@register');
+Route::post('/login', 'Auth\LoginController@login');
 
 Route::get('test', function () {
-
-    $user = \App\User::with('posts')->find(26);
-    return new \App\Http\Resources\User($user);
+    $url= '/';
+    $http = new \GuzzleHttp\Client(['base_uri' => 'http://vue-spa.dev:8000']);
+    $res = $http->request('GET', $url);
+    echo($res->getBody());
 });
