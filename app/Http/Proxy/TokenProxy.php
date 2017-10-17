@@ -9,8 +9,15 @@
 
 namespace App\Http\Proxy;
 
+/**
+ * Class TokenProxy
+ * @package App\Http\Proxy
+ */
 class TokenProxy
 {
+    /**
+     * @var \GuzzleHttp\Client
+     */
     protected $http;
 
     /**
@@ -22,6 +29,32 @@ class TokenProxy
         $this->http = $http;
     }
 
+    /**
+     * @param $email
+     * @param $password
+     * @return string
+     */
+    public function login($email, $password)
+    {
+        if (auth()->attempt(['email' => $email, 'password' => $password, 'is_active' => 1])) {
+            return $this->proxy('password', [
+                'username' => $email,
+                'password' => $password,
+                'scope' => ''
+            ]);
+        }
+
+        return response()->json([
+            'status' => false,
+            'message' => 'Credentials not match'
+        ], 421);
+    }
+
+    /**
+     * @param $grantType
+     * @param array $data
+     * @return string
+     */
     public function proxy($grantType, array $data = [])
     {
         $data = array_merge($data, [
@@ -30,19 +63,14 @@ class TokenProxy
             'grant_type' => $grantType,
         ]);
 
-
-//dd($this->http);
-        $response = $this->http->post('http://localhost:8000/oauth/token', [
+        $response = $this->http->post('http://vue-spa.dev/oauth/token', [
             'form_params' => $data
         ]);
-        echo ($response);
-        die();
 
         $token = json_decode((string) $response->getBody(), true);
-
         return response()->json([
             'token' => $token['access_token'],
-            'expires_in' => $token['expire_in']
+            'expires_in' => $token['expires_in']
         ])->cookie('refreshToken', $token['refresh_token'], 86400, null, null, false, true);
     }
 }

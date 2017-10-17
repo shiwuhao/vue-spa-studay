@@ -53,17 +53,11 @@ class LoginController extends Controller
 
     /**
      * @param Response $request
-     * @return void
+     * @return string
      */
     public function login(Request $request)
     {
 //        $this->validateLogin($request);
-
-
-        return $this->proxy->proxy('password', [
-            'username' => $request->email,
-            'password' => $request->password,
-            'scope' => ''
-        ]);
+        return $this->proxy->login($request->email, $request->password);
     }
 }

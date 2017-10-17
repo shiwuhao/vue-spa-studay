@@ -26,7 +26,7 @@ Route::post('/login', 'Auth\LoginController@login');
 
 Route::get('test', function () {
     $url= '/';
-    $http = new \GuzzleHttp\Client(['base_uri' => 'http://vue-spa.dev:8000']);
+    $http = new \GuzzleHttp\Client(['base_uri' => 'http://vue-spa.dev']);
     $res = $http->request('GET', $url);
     echo($res->getBody());
 });

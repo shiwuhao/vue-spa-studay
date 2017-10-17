@@ -11,9 +11,9 @@ window.Vue = require('vue');
 
 import VueRouter from  'vue-router';
 import router from './routes';
+import store from './store/index';
 import App from './components/App.vue';
 
-// import zh_CN from 'vee-validate/dist/locale/zh_CN';
 import zh_CN from './locale/zh_CN';
 import VeeValidate, { Validator } from 'vee-validate';
 
@@ -34,5 +34,6 @@ Vue.component('app', App);
 
 const app = new Vue({
     el: '#app',
-    router
+    router,
+    store
 });
