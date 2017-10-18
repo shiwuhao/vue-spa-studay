@@ -9,6 +9,7 @@ import JWTToken from './helper/jwt';
 let routes = [
     {
         path : '/',
+        name : 'home',
         component : require('./components/pages/Home'),
         meta : {}
     },
@@ -27,13 +28,13 @@ let routes = [
         path : '/login',
         name : 'login',
         component : require('./components/login/Login'),
-        meta : {}
+        meta : { requiresGuest: true }
     },
     {
         path : '/register',
         name : 'register',
         component : require('./components/register/Register'),
-        meta : {}
+        meta : { requiresGuest: true }
     },
     {
         path : '/confirm',
@@ -57,10 +58,20 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
     if (to.meta.requiresAuth) {
+        console.log(Store.state.authenticated);
+        console.log(JWTToken.getToken());
         if (Store.state.authenticated || JWTToken.getToken()) {
             return next();
         } else {
-            return next({ name : 'login' });
+            return next({ name : 'confirm' });
+        }
+    }
+
+    if (to.meta.requiresGuest) {
+        if (Store.state.authenticated || JWTToken.getToken()) {
+            return next({ name : 'home' });
+        } else {
+            return next();
         }
     }
     next();

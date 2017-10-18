@@ -1,5 +1,5 @@
 <template>
-    <form class="form-horizontal" method="POST" @submit.prevent="register">
+    <form class="form-horizontal" method="POST" @submit.prevent="login">
         <div class="form-group" :class="{ 'has-error' : errors.has('email') }">
             <label for="email" class="col-md-3 control-label">E-Mail Address</label>
 
@@ -37,24 +37,25 @@
     export default{
         data() {
             return {
-                name:'',
                 email:'',
                 password:''
             }
         },
         methods:{
-            register(){
-                let formData = {
-                    email:this.email,
-                    password:this.password
-                };
-                axios.post('api/login', formData).then(response => {
-                    JWTToken.setToken(response.data.token);
-                    this.$store.state.authenticated = true;
-                    this.$router.push({ name:'profile' });
-                }).catch(error => {
-                    console.log(error.response.data);
-                })
+            login(){
+
+                this.$validator.validateAll().then(result => {
+                   if (result) {
+                       let formData = {
+                           email:this.email,
+                           password:this.password
+                       };
+
+                       this.$store.dispatch('loginRequest', formData).then(response => {
+                           this.$router.push({ name:'profile' });
+                       })
+                   }
+                });
             }
         }
     }
