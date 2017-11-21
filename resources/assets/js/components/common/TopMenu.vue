@@ -31,8 +31,7 @@
         },
         methods : {
             logout() {
-                jwtToken.removeToken();
-                this.$store.dispatch('unSetAuthUser',null).then(response => {
+                this.$store.dispatch('logoutRequest',null).then(response => {
                     this.$router.push({ name:'home' });
                 });
             }

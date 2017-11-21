@@ -28,7 +28,7 @@ let routes = [
         path : '/login',
         name : 'login',
         component : require('./components/login/Login'),
-        meta : { requiresGuest: true }
+        meta : { requiresGuest: false }
     },
     {
         path : '/register',
@@ -58,9 +58,21 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
     if (to.meta.requiresAuth) {
-        console.log(Store.state.authenticated);
-        console.log(JWTToken.getToken());
-        if (Store.state.authenticated || JWTToken.getToken()) {
+        console.log(Store.state.AuthUser);
+        /*
+        * 此时 AuthUser.authenticated 为true
+        * {__ob__: Observer}
+          authenticated:true
+          email:"12345@qq.com"
+          name:"12345"
+        *
+        * */
+        console.log(Store.state.AuthUser.authenticated);
+        /*
+         此时 AuthUser.authenticated 为false
+        */
+
+        if (Store.state.AuthUser.authenticated || JWTToken.getToken()) {
             return next();
         } else {
             return next({ name : 'confirm' });
